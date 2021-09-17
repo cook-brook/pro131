@@ -1,8 +1,8 @@
 Kitchen="";
 status="";
+objects=[];
 function preload(){
     Kitchen=loadImage("kitchen.jpeg");
-
 }
 function setup(){
     canvas=createCanvas(640,420);
@@ -21,13 +21,24 @@ function gotResults(error,results){
         console.log(error);
     }
     console.log(results);
+    objects=results;
 }
 function draw(){
-    image(Kitchen,0,0,640,420);
-    fill("#0000FF");
+   
+    if(status!=""){
+        image(Kitchen,0,0,640,420);
+        for(var i=0;i<objects.length;i++){
+            document.getElementById("status").innerHTML="Status: Object Detected";
+            fill("#FF0000");
+            percentage=floor(objects[i].confidence * 100);
+            text(objects[i].label+" "+percentage+"%",objects[i].x,objects[i].y);
+            noFill();
+            stroke("#FF0000");
+            rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
 
-    noFill();
-    stroke("#0000FF")
+        }
+    }
+
  
 }
 function back(){

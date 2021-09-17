@@ -1,15 +1,14 @@
-br="";
 status="";
+br="";
+object=[];
 function preload(){
-    br=loadImage("br.jpg");
+    br=loadImage('br.jpg');
 }
-
 function setup(){
     canvas=createCanvas(640,420);
     canvas.center();
-    canvas.position(470,220);
     objectDetector=ml5.objectDetector('cocossd',modelLoaded);
-    document.getElementById("status").innerHTML="Status: Object Detecting";
+    document.getElementById("status").innerHTML="Status : Detecting objects";
 }
 function modelLoaded(){
     console.log("model loaded!!");
@@ -21,13 +20,25 @@ function gotResults(error,results){
         console.log(error);
     }
     console.log(results);
+    object=results;
 }
+
+
 function draw(){
     image(br,0,0,640,420);
-    fill("#0000FF");
+    if(status!=""){
+        for(i=0; i<object.length; i++){
+            document.getElementById("status").innerHTML="Status: Object Detected";
+            fill("#FF0000");
+            percentage=floor(object[i].confidence*100);
+            text(object[i].label+" "+percentage+"%",object[i].x-15,object[i].y);
+            noFill();
+            stroke("#FF0000");
+            rect(object[i].x,object[i].y,object[i].width,object[i].height);
+        }
+    }
 
-    noFill();
-    stroke("#0000FF")
+
  
 }
 function back(){
