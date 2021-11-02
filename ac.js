@@ -2,13 +2,14 @@ status="";
 acc="";
 object=[];
 function preload(){
-    acc=loadImage('ac.jpg');
+    acc=loadImage('bottle.png');
 }
 function setup(){
     canvas=createCanvas(640,420);
     canvas.center();
+    canvas.position(470,220);
     objectDetector=ml5.objectDetector('cocossd',modelLoaded);
-    document.getElementById("status").innerHTML="Status : Detecting objects";
+    document.getElementById("status").innerHTML="Status: Object Detecting";
 }
 function modelLoaded(){
     console.log("model loaded!!");
@@ -20,26 +21,26 @@ function gotResults(error,results){
         console.log(error);
     }
     console.log(results);
-    object=results;
+    objects=results;
 }
 
-
-function draw(){
-    
-    if(status!=""){
-        image(acc,0,0,640,420);
-        for(var i=0; i<object.length; i++){
-            document.getElementById("status").innerHTML="Status: Object Detected";
-            fill("#FF0000");
-            percentage=floor(object[i].confidence * 100);
-            text(object[i].label+" "+percentage+"%",object[i].x+5,object[i].y+15);
-            noFill();
-            stroke("#FF0000");
-            rect(object[i].x,object[i].y,object[i].width,object[i].height);
-
-        }
+function draw() {
+    if (status != undefined) {
+          image(acc, 0, 0, 640, 420);
+      for (var i = 0; i < objects.length; i++) {
+        document.getElementById("status").innerHTML = "Status : Objects Detected";
+  
+        fill(255, 0, 0);
+        percent = floor(objects[i].confidence * 100);
+        text(objects[i].label + " " + percent + "%", objects[i].x + 5, objects[i].y + 15);
+        noFill();
+        stroke(255, 0, 0);
+        rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+      }
     }
-}
+  }
+
+  
 function back(){
     window.location ="index.html";
 
